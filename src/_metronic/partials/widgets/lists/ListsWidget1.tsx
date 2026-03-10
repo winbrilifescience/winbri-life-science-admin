@@ -127,7 +127,7 @@ const ListsWidget1: React.FC<Props> = ({ className }) => {
 						<a
 							href='#'
 							className='text-dark text-hover-primary fs-6 fw-bold'>
-							Fg Group Admin Panel
+							Winbri Life Science Admin Panel
 						</a>
 						<span className='text-muted fw-semibold'>Developer Team</span>
 					</div>

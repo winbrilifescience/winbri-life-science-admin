@@ -23,12 +23,12 @@ const AuthLayout = () => {
 					className='mb-12'>
 					<img
 						alt='Logo'
-						src={toAbsoluteUrl('/media/logos/fwg-logo.png')}
+						src={toAbsoluteUrl('/media/logos/winbri-logo.png')}
 						className='theme-dark-show h-65px'
 					/>
 					<img
 						alt='Logo'
-						src={toAbsoluteUrl('/media/logos/fwg-logo.png')}
+						src={toAbsoluteUrl('/media/logos/winbri-logo.png')}
 						className='theme-light-show h-65px'></img>
 				</a>
 				{/* end::Logo */}

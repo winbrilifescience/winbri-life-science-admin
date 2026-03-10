@@ -1,11 +1,11 @@
 export const getPlatformAuthorizationToken = (
-	platform: 'three_style'
+	platform: 'winbri_life_science'
 ): string | null => {
 	return localStorage.getItem('auth_' + platform)
 }
 
 export function getAPIHeaders(
-	platform: 'three_style',
+	platform: 'winbri_life_science',
 	additionalHeaders?: object
 ): object {
 	return {

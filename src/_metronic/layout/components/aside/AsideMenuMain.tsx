@@ -22,7 +22,7 @@ export function AsideMenuMain() {
 
 	return (
 		<>
-			{adminType === 'THREE-STYLE' && <ThreeStyleAsideMenuItems />}
+			{adminType === 'Admin' && <ThreeStyleAsideMenuItems />}
 			{adminType === 'Master' && <MasterAsideMenuItems />}
 		</>
 	)

@@ -40,8 +40,7 @@ export function Dropdown1() {
 							data-placeholder='Select option'
 							data-allow-clear='true'
 							defaultValue={'17841423812698385'}>
-							<option value='17841423812698385'>FGIIT</option>
-							<option value='17841405942376183'>FWG</option>
+							<option value='17841423812698385'>WINBRI</option>
 						</select>
 					</div>
 				</div>

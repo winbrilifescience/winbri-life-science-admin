@@ -5,7 +5,7 @@ import clsx from 'clsx'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import * as Yup from 'yup'
-import { LoginWithEmailPasswordOTP, VerifyEmailOTP } from '../../../Functions/FGGroup'
+import { LoginWithEmailPasswordOTP, VerifyEmailOTP } from '../../../Functions/WinbriLifeScience'
 import { useAuth } from '../../../modules/auth'
 
 const loginSchema = Yup.object().shape({
@@ -60,7 +60,7 @@ export function MasterLogin() {
 					})
 					if (auth.status !== 200) throw new Error(auth.message)
 					saveAuth(auth.data)
-					localStorage.setItem('fg_master', 'main_master')
+					localStorage.setItem('winbri_master', 'main_master')
 				} else {
 					// Initial login
 					const auth: any = await LoginWithEmailPasswordOTP(values)

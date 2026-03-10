@@ -1,17 +1,11 @@
 type FeedbackStatusValue = 'PENDING' | 'APPROVED' | 'REJECTED'
 type OrderStatusValue = 'SUCCESS' | 'PENDING' | 'FAILED' | 'CANCELLED' | 'REFUNDED'
-type OrderItemTypeValue =
-	| 'FG_MEAL_PRODUCT'
-	| 'PT_PLAN'
-	| 'FITNESS_COURSE'
-	| 'DIGITAL_PLAN'
-	| 'BOOKS'
-	| 'EBOOKS'
+type OrderItemTypeValue = 'BOOKS'
 type ShipmentStatusValue = 'PLACED' | 'DISPATCHED' | 'DELIVERED' | 'CANCELLED' | 'RETURN'
 type ProjectSubmissionStatusValue = 'Reassigned' | 'Rejected' | 'Approved'
 
 // API Response
-type FGGroupAPIResponse = {
+type WinbriAPIResponse = {
 	status: number
 	response: string
 	message?: string
@@ -22,47 +16,21 @@ type FGGroupAPIResponse = {
 	_developer?: string | object | object[]
 }
 
-type FitnessCourseType = 'Online Course' | 'Offline Course' | 'Flexible Learning'
-
-type FitnessCourseCertificateOptions = {
-	user_fitness_course_id: string
-	generate_type: 'AUTO' | 'MANUAL'
-	certificate_data?: generate_type extends 'AUTO'
-		? {
-				name: string
-				passing_date: string
-				instructor: string
-				certificate:
-					| 'Certified Personal Trainer'
-					| 'Certified Dietitian Course'
-					| 'Anabolic Androgenic Steroids'
-					| 'Tabata Workshop'
-					| 'Injury Rehab Course'
-					| 'Certified Wellness Consultant'
-					| 'Diploma in Gym Management'
-					| 'Python Programming'
-					| 'Group Instructor Masterclass'
-		  }
-		: undefined
-}
-
-type FGGroupSearchOptions = {
+type WinbriSearchOptions = {
 	search?: string
 }
 
-type FGGroupPaginationOptions = {
+type WinbriPaginationOptions = {
 	page?: number
 	limit?: number
 	skip?: number
 }
 
-type FGGroupSortOptions = {
+type WinbriSortOptions = {
 	sort?: string
 	sortOrder?: QuerySortOptions
 }
 
 type PaymentGateway =
 	| 'RAZORPAY'
-	| 'RAZORPAY_FGIIT'
-	| 'RAZORPAY_FGMEALS'
-	| 'RAZORPAY GOMZI CONSULTING'
+	| 'RAZORPAY_WINBRI'

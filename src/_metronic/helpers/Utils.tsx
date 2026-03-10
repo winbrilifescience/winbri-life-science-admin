@@ -38,7 +38,7 @@ export const APIGet = (
 	headers?: object,
 	queryString?: object,
 	body?: object
-): Promise<FGGroupAPIResponse | FWG_APIResponse> => {
+): Promise<WinbriAPIResponse> => {
 	return new Promise((resolve, reject) => {
 		axios
 			.get(APIEndpoint, {
@@ -64,7 +64,7 @@ export const APIPost = (
 	headers?: object,
 	queryString?: object,
 	body?: object
-): Promise<FGGroupAPIResponse | FWG_APIResponse> => {
+): Promise<WinbriAPIResponse> => {
 	return new Promise((resolve, reject) => {
 		axios
 			.post(APIEndpoint, body, {
@@ -90,7 +90,7 @@ export const APIPut = (
 	headers?: object,
 	queryString?: object,
 	body?: object
-): Promise<FGGroupAPIResponse | FWG_APIResponse> => {
+): Promise<WinbriAPIResponse> => {
 	return new Promise((resolve, reject) => {
 		axios
 			.put(APIEndpoint, body, {
@@ -116,7 +116,7 @@ export const APIPatch = (
 	headers?: object,
 	queryString?: object,
 	body?: object
-): Promise<FGGroupAPIResponse | FWG_APIResponse> => {
+): Promise<WinbriAPIResponse> => {
 	return new Promise((resolve, reject) => {
 		axios
 			.patch(APIEndpoint, body, {
@@ -142,7 +142,7 @@ export const APIDelete = (
 	headers?: object,
 	queryString?: object,
 	body?: object
-): Promise<FGGroupAPIResponse | FWG_APIResponse> => {
+): Promise<WinbriAPIResponse> => {
 	return new Promise((resolve, reject) => {
 		axios
 			.delete(APIEndpoint, {

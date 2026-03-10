@@ -1,4 +1,4 @@
-const AUTH_LOCAL_STORAGE_KEY = 'auth_fwg' && 'auth_three_style'
+const AUTH_LOCAL_STORAGE_KEY = 'auth_winbri' && 'auth_winbri_life_science'
 
 const getAuth = (): string | null | undefined => {
 	if (!localStorage) {

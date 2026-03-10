@@ -21,12 +21,12 @@ const AuthLayout = () => {
 				<a href='#'>
 					<img
 						alt='Logo'
-						src={toAbsoluteUrl('/media/logos/fwg-logo.png')}
+						src={toAbsoluteUrl('/media/logos/winbri-logo.png')}
 						className='theme-dark-show h-65px'
 					/>
 					<img
 						alt='Logo'
-						src={toAbsoluteUrl('/media/logos/fwg-logo.png')}
+						src={toAbsoluteUrl('/media/logos/winbri-logo.png')}
 						className='theme-light-show h-65px'></img>
 				</a>
 				<h1 className='mb-12 my-4'>Master Sign In</h1>

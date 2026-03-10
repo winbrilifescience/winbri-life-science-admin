@@ -1,3 +1,3 @@
-# FG Group Admin Portal
+# Winbri Life Science Admin Portal
 
-Master Admin Portal for FG Group and all its subsidiaries.
+Master Admin Portal for Winbri Life Science and all its subsidiaries.

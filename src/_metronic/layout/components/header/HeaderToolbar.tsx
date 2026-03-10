@@ -9,20 +9,19 @@ const HeaderToolbar = () => {
 	const [selectedLogo, setSelectedLogo] = useState('')
 	const [adminType, setAdminType] = useState('')
 	const [masterShow, setMasterShow] = useState(false)
-	const [fwgSubAdminShow, setFwgSubAdminShow] = useState('')
 
 	useEffect(() => {
 		const storedAdmin = localStorage.getItem('admin')
 		const storedAdminType = localStorage.getItem('admin_type')
-		const masterAdminLogin = localStorage.getItem('fg_master')
+		const masterAdminLogin = localStorage.getItem('winbri_master')
 		if (masterAdminLogin === 'main_master') {
 			setMasterShow(true)
 		}
 		if (storedAdmin) {
-			if (storedAdmin === 'THREE-STYLE') {
-				setSelectedLogo('/media/logos/three-style-logo.png')
+			if (storedAdmin === 'Admin') {
+				setSelectedLogo('/media/logos/winbri-life-science-logo.png')
 			} else if (storedAdmin === 'Master') {
-				setSelectedLogo('/media/logos/fwg-logo.png')
+				setSelectedLogo('/media/logos/winbri-logo.png')
 			}
 		}
 		if (storedAdminType) {
@@ -37,8 +36,8 @@ const HeaderToolbar = () => {
 		setSelectedLogo(logo)
 		localStorage.setItem('admin', value)
 
-		if (value === 'THREE-STYLE') {
-			window.location.href = '/three-style/dashboard'
+		if (value === 'Admin') {
+			window.location.href = '/winbri-life-science/dashboard'
 		} else if (value === 'Master') {
 			window.location.href = '/master/dashboard'
 		}
@@ -116,7 +115,7 @@ const HeaderToolbar = () => {
 												href='#'
 												className='menu-link'
 												onClick={() =>
-													handleSelection('/media/logos/fintess-with-gomzi-logo.png', 'Master')
+													handleSelection('/media/logos/winbri-life-science-logo.png', 'Master')
 												}>
 												<span className='menu-title'>Master</span>
 											</a>
@@ -126,7 +125,7 @@ const HeaderToolbar = () => {
 										<a
 											href='#'
 											className='menu-link'
-											onClick={() => handleSelection('/media/logos/three-style-logo.png', 'THREE-STYLE')}>
+											onClick={() => handleSelection('/media/logos/winbri-life-science-logo.png', 'Admin')}>
 											<span className='menu-title'>Three Style</span>
 										</a>
 									</div>
@@ -136,8 +135,8 @@ const HeaderToolbar = () => {
 											className='menu-link'
 											onClick={() =>
 												handleSelection(
-													'/media/logos/gomzi-nutrition.png',
-													'Gomzi_Nutrition_trainer'
+													'/media/logos/winbri-logo.png',
+													'trainer'
 												)
 											}>
 											<span className='menu-title'>Three Style Trainer</span>

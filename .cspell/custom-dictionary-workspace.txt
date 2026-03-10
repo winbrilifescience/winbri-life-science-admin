@@ -1,7 +1,7 @@
 # Custom Dictionary Words
 daterangepicker
 feedpath
-fggroup
+winbri
 Gomzi
 ioweek
 metronic

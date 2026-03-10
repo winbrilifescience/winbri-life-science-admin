@@ -22,7 +22,7 @@ export function ThreeStyleAsideMenuItems() {
 	return (
 		<>
 			<AsideMenuItem
-				to='/three-style/dashboard'
+				to='/winbri-life-science/dashboard'
 				Icon={faHome}
 				title='Dashboard'
 			/>
@@ -54,32 +54,8 @@ export function ThreeStyleAsideMenuItems() {
 			</AsideMenuItemWithSub>
 			{/* Invoice End*/}
 
-			<AsideMenuItem
-				Icon={faChartLine}
-				to='expense-details'
-				title='Expense'
-			/>
-
-			{/* FGIIT start*/}
-			<AsideMenuItemWithSub
-				to=''
-				title='FGIIT'
-				Icon={faBook}>
-				<AsideMenuItem
-					to='fitness-courses'
-					title='Fitness Course'
-					hasBullet={true}
-				/>
-				<AsideMenuItem
-					to='books'
-					title='Books'
-					hasBullet={true}
-				/>
-			</AsideMenuItemWithSub>
-			{/* FGIIT End*/}
-
 			{/* Users start*/}
-			<AsideMenuItemWithSub
+			{/* <AsideMenuItemWithSub
 				to=''
 				title='Users'
 				Icon={faUsers}>
@@ -88,111 +64,14 @@ export function ThreeStyleAsideMenuItems() {
 					title='All Users'
 					hasBullet={true}
 				/>
-			</AsideMenuItemWithSub>
+			</AsideMenuItemWithSub> */}
 			{/* Users End*/}
-
-			{/* Orders start*/}
-			<AsideMenuItemWithSub
-				to=''
-				title='Orders'
-				Icon={faCartArrowDown}>
-				<AsideMenuItem
-					to='all-order'
-					title='All Orders'
-					hasBullet={true}
-				/>
-				<AsideMenuItem
-					to='fitness-course-order'
-					title='Fitness Course'
-					hasBullet={true}
-				/>
-			</AsideMenuItemWithSub>
-			{/* Orders End*/}
-
-			{/* Cart start*/}
-			<AsideMenuItemWithSub
-				to=''
-				title='Cart'
-				Icon={faCartArrowDown}>
-				<AsideMenuItem
-					to='/three-style/cart/add-to-cart'
-					title='User Cart'
-					Icon={faCartShopping}
-				/>
-				<AsideMenuItem
-					to='/three-style/cart/abandoned-list'
-					title='Abandoned Checkout'
-					Icon={faJar}
-				/>
-			</AsideMenuItemWithSub>
-			{/* Cart End*/}
-
 			
 			<AsideMenuItem
 				to='product'
 				title='All Products'
 				Icon={faJar}
 			/>
-			<AsideMenuItem
-				to='/three-style/add-to-cart'
-				title='User Cart'
-				Icon={faCartShopping}
-			/>
-			<AsideMenuItem
-				to='/three-style/abandoned-list'
-				title='Abandoned Checkout'
-				Icon={faJar}
-			/>
-			<AsideMenuItem
-				to='wishlist'
-				title='Wishlist'
-				Icon={faHeart}
-			/>
-			<AsideMenuItemWithSub
-				to=''
-				title='Invoice'
-				Icon={faFileInvoice}>
-				<AsideMenuItem
-					to='create-invoice-nutrition'
-					title='Create Invoice'
-					hasBullet={true}
-				/>
-				<AsideMenuItem
-					to='nutrition-invoice'
-					title='Invoice List'
-					hasBullet={true}
-				/>
-			</AsideMenuItemWithSub>
-			<AsideMenuItem
-				to='expense'
-				title='Expense'
-				Icon={faChartLine}
-			/>
-			<AsideMenuItem
-				to='create-quotation'
-				title='Quotation'
-				Icon={faCoins}
-			/>
-			<AsideMenuItem
-				to='product-order'
-				title='Product Order'
-				Icon={faJar}
-			/>
-			<AsideMenuItem
-				to='trainer-list'
-				title='Trainer List'
-				Icon={faDumbbell}
-			/>
-			<AsideMenuItemWithSub
-				to=''
-				title='Reference Coupon'
-				Icon={faTags}>
-				<AsideMenuItem
-					to='manage-coupon'
-					title='Manage Coupon'
-					hasBullet={true}
-				/>
-			</AsideMenuItemWithSub>
 		</>
 	)
 }

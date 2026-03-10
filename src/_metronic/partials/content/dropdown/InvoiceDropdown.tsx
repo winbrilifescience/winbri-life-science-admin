@@ -26,8 +26,7 @@ export function InvoiceDropdown() {
 							data-allow-clear='true'
 							defaultValue={'1'}>
 							<option></option>
-							<option value='1'>FGIIT</option>
-							<option value='2'>FWG</option>
+							<option value='1'>WINBRI</option>
 						</select>
 					</div>
 				</div>

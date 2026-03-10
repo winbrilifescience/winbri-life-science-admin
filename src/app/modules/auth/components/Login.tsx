@@ -5,7 +5,7 @@ import clsx from 'clsx'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import * as Yup from 'yup'
-import { LoginWithEmailPasswordOTP, VerifyEmailOTP } from '../../../Functions/FGGroup'
+import { LoginWithEmailPasswordOTP, VerifyEmailOTP } from '../../../Functions/WinbriLifeScience'
 import { useAuth } from '../core/Auth'
 
 const loginSchema = Yup.object().shape({

@@ -10,8 +10,8 @@ export function HeaderWrapper() {
 	const { aside } = config
 	const location = useLocation()
 	const routesToCloseSidebar = [
-		'/three-style/all-order',
-		'/three-style/contact-inquiry/contact-inquiry-view',
+		'/winbri-life-science/all-order',
+		'/winbri-life-science/contact-inquiry/contact-inquiry-view',
 	]
 
 	const shouldCloseSidebar = routesToCloseSidebar.includes(location.pathname)
@@ -42,7 +42,7 @@ export function HeaderWrapper() {
 					<div>
 						<img
 							alt='Logo'
-							src={toAbsoluteUrl('/media/logos/fwg-logo.png')}
+							src={toAbsoluteUrl('/media/logos/winbri-logo.png')}
 							className='h-25px h-lg-45px'
 						/>
 					</div>
@@ -50,7 +50,7 @@ export function HeaderWrapper() {
 						<h3
 							style={{ marginLeft: '15px', marginTop: '10px' }}
 							className='text-white'>
-							FG Group
+							Winbri Life Science
 							{process.env.REACT_APP_NODE_ENV === 'development' && (
 								<span className='badge badge-light-warning fs-8 m-2'>Test</span>
 							)}

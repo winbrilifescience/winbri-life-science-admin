@@ -21,7 +21,7 @@ const HeaderUserMenu: FC = () => {
 	}
 
 	useEffect(() => {
-		const adminData: any = localStorage.getItem('fg_group_info')
+		const adminData: any = localStorage.getItem('winbri_info')
 		const storedAdminType = localStorage.getItem('admin')
 
 		if (adminData) {
@@ -72,7 +72,7 @@ const HeaderUserMenu: FC = () => {
 				<>
 					<div className='menu-item px-5'>
 						<Link
-							to={'/three-style/admin-user/admin-profile'}
+							to={'/winbri-life-science/admin-user/admin-profile'}
 							className='menu-link px-5'>
 							My Profile
 						</Link>

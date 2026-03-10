@@ -14,24 +14,24 @@ const AppRoutes: FC = () => {
 	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
 
 	useEffect(() => {
-		const three_style_Token = localStorage.getItem('auth_three_style')
-		const master_Token = localStorage.getItem('auth_three_style')
+		const winbri_life_science_Token = localStorage.getItem('auth_winbri_life_science')
+		const master_Token = localStorage.getItem('auth_winbri_life_science')
 		const admin_Type = localStorage.getItem('admin')
 
-		setThreeStyleToken(three_style_Token)
+		setThreeStyleToken(winbri_life_science_Token)
 		setMasterToken(master_Token)
 		setAdminType(admin_Type)
 
-		// Check if the auth_three_style token is available
-		if (three_style_Token) {
+		// Check if the auth_winbri_life_science token is available
+		if (winbri_life_science_Token) {
 			setIsAuthenticated(true)
 		}
 	}, [])
 
 	const getDefaultRoute = () => {	
 		if (adminType === 'Master' && masterToken) return '/master/dashboard'
-		if (adminType === 'THREE-STYLE' && threeStyleToken) return '/three-style/dashboard'
-		if (threeStyleToken) return '/three-style/dashboard'
+		if (adminType === 'Admin' && threeStyleToken) return '/winbri-life-science/dashboard'
+		if (threeStyleToken) return '/winbri-life-science/dashboard'
 		return '/error/404'
 	}
 
@@ -67,7 +67,7 @@ const AppRoutes: FC = () => {
 		const extractedText = currentUrl.split('/')[1]
 		
 		const isLoginPage = currentUrl.includes('login')
-		const masterAdminLogin = localStorage.getItem('fg_master')
+		const masterAdminLogin = localStorage.getItem('winbri_master')
 		
 		const searchedURL: any = localStorage.getItem('searchedURL')
 		if (admin && searchedURL) {
@@ -77,10 +77,10 @@ const AppRoutes: FC = () => {
 
 		if (admin && !isLoginPage) {
 			if (
-				extractedText === 'three-style' &&
-				admin !== 'THREE-STYLE'
+				extractedText === 'winbri-life-science' &&
+				admin !== 'Admin'
 			) {
-				localStorage.setItem('admin', 'THREE-STYLE')
+				localStorage.setItem('admin', 'Admin')
 				window.location.href = currentUrl
 			}
 			if (
@@ -91,13 +91,13 @@ const AppRoutes: FC = () => {
 				localStorage.setItem('admin', 'Master')
 				window.location.href = currentUrl
 			} else if(extractedText === 'master' && masterAdminLogin !== 'main_master') {
-				window.location.href = '/three-style/dashboard'
+				window.location.href = '/winbri-life-science/dashboard'
 			}
 			if (currentUrl == '/master/login' && adminType) {
 				return (window.location.href = '/master/dashboard')
 			}
-			if (currentUrl == '/login' && adminType && admin !== 'THREE-STYLE') {
-				return (window.location.href = '/three-style/dashboard')
+			if (currentUrl == '/login' && adminType && admin !== 'Admin') {
+				return (window.location.href = '/winbri-life-science/dashboard')
 			}
 		}
 	}
@@ -112,15 +112,15 @@ const AppRoutes: FC = () => {
 					/>
 					{isAuthenticated ? (
 						<>
-							{threeStyleToken && adminType === 'THREE-STYLE' ? (
+							{threeStyleToken && adminType === 'Admin' ? (
 								<>
 									<Route
-										path='/three-style/*'
+										path='/winbri-life-science/*'
 										element={<ThreeStylePrivateRoutes />}
 									/>
 									<Route
 										index
-										element={<Navigate to='/three-style/dashboard' />}
+										element={<Navigate to='/winbri-life-science/dashboard' />}
 									/>
 								</>
 							) : null}
@@ -131,7 +131,7 @@ const AppRoutes: FC = () => {
 										element={<MasterPrivateRoutes />}
 									/>
 									<Route
-										path='/three-style/*'
+										path='/winbri-life-science/*'
 										element={<ThreeStylePrivateRoutes />}
 									/>
 									<Route

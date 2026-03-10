@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getProfile } from '../../../../app/Functions/FGGroup'
+import { getProfile } from '../../../../app/Functions/WinbriLifeScience'
 import { KTIcon, toAbsoluteUrl } from '../../../helpers'
 import { HeaderUserMenu } from '../../../partials'
 
@@ -11,7 +11,7 @@ const AsideToolbar = () => {
 		try {
 			const data: any = await getProfile()
 			setUserProfile(data.data)
-			localStorage.setItem('fg_group_info', JSON.stringify(data.data))
+			localStorage.setItem('winbri_info', JSON.stringify(data.data))
 			localStorage.setItem('admin_type', data?.data?.type)
 		} catch (error: any) {
 			console.error(error)

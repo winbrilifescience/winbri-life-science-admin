@@ -1,5 +1,5 @@
 import type { GroupBase, OptionsOrGroups } from 'react-select'
-import { GetStudents } from '../Functions/FGGroup'
+import { GetStudents } from '../Functions/WinbriLifeScience'
 
 export type OptionType = {
 	value: string
@@ -13,7 +13,7 @@ const sleep = (ms: number) =>
 		}, ms)
 	})
 
-export const loadUserOptionsFGIITStudents = async (
+export const loadUserOptionsWinbriStudents = async (
 	search: string,
 	prevOptions: OptionsOrGroups<OptionType, GroupBase<OptionType>>
 ) => {

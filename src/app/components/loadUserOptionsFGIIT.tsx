@@ -1,5 +1,5 @@
 import type { GroupBase, OptionsOrGroups } from 'react-select'
-import { GetUsers } from '../Functions/FGGroup'
+import { GetUsers } from '../Functions/WinbriLifeScience'
 
 export type OptionType = {
 	value: string
@@ -13,7 +13,7 @@ const sleep = (ms: number) =>
 		}, ms)
 	})
 
-export const loadUserOptionsFGIIT = async (
+export const loadUserOptionsWinbri = async (
 	search: string,
 	prevOptions: OptionsOrGroups<OptionType, GroupBase<OptionType>>
 ) => {
