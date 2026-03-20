@@ -20,7 +20,8 @@ export function CreateService(body: {
 	location: string
 	mobile: number
 	paymentMode: string
-	receivedAmount: number
+	upiReceivedAmount: number
+	cashReceivedAmount: number
 }): Promise<WinbriAPIResponse> {
 	return APIPost(WinbriEndpoints.CreateService, getAPIHeaders('winbri_life_science'), undefined, body)
 }
@@ -44,7 +45,8 @@ export function UpdateService(body: {
 	location: string
 	mobile: number
 	paymentMode: string
-	receivedAmount: number
+	upiReceivedAmount: number
+	cashReceivedAmount: number
 }): Promise<WinbriAPIResponse> {
 	return APIPost(WinbriEndpoints.UpdateService, getAPIHeaders('winbri_life_science'), undefined, body)
 }

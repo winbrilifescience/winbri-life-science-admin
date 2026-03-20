@@ -7,6 +7,7 @@ import {
 	faCoins,
 	faDumbbell,
 	faFileInvoice,
+	faFileMedical,
 	faHeart,
 	faHome,
 	faJar,
@@ -18,10 +19,10 @@ import {
 import { AsideMenuItem } from '../AsideMenuItem'
 import { AsideMenuItemWithSub } from '../AsideMenuItemWithSub'
 
-export function ThreeStyleAsideMenuItems() {
+export function WinbriAsideMenuItems() {
 	return (
 		<>
-			<AsideMenuItem
+			{/* <AsideMenuItem
 				to='/winbri-life-science/dashboard'
 				Icon={faHome}
 				title='Dashboard'
@@ -35,9 +36,9 @@ export function ThreeStyleAsideMenuItems() {
 				to='contact-inquiry/contact'
 				Icon={faUser}
 				title='Contact Inquery'
-			/>
+			/> */}
 			{/* Invoice start*/}
-			<AsideMenuItemWithSub
+			{/* <AsideMenuItemWithSub
 				to=''
 				title='Invoice'
 				Icon={faFileInvoice}>
@@ -51,7 +52,7 @@ export function ThreeStyleAsideMenuItems() {
 					title='Invoice List'
 					hasBullet={true}
 				/>
-			</AsideMenuItemWithSub>
+			</AsideMenuItemWithSub> */}
 			{/* Invoice End*/}
 
 			{/* Users start*/}
@@ -67,10 +68,15 @@ export function ThreeStyleAsideMenuItems() {
 			</AsideMenuItemWithSub> */}
 			{/* Users End*/}
 			
-			<AsideMenuItem
+			{/* <AsideMenuItem
 				to='product'
 				title='All Products'
 				Icon={faJar}
+			/> */}
+			<AsideMenuItem
+				to='service'
+				title='Service'
+				Icon={faFileMedical}
 			/>
 		</>
 	)

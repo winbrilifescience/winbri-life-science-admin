@@ -1,5 +1,6 @@
 // let winbriBaseUrl = 'https://dev-api.threestyle.in',
-let winbriBaseUrl = 'http://localhost',
+// let winbriBaseUrl = 'http://localhost',
+let winbriBaseUrl = 'https://winbri-life-science-api.onrender.com',
 	// winbriLifeBaseUrl = 'http://localhost:82'
 	winbriLifeBaseUrl = 'https://app-api.threestyle.in'
 

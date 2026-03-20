@@ -19,7 +19,7 @@ const HeaderToolbar = () => {
 		}
 		if (storedAdmin) {
 			if (storedAdmin === 'Admin') {
-				setSelectedLogo('/media/logos/winbri-life-science-logo.png')
+				setSelectedLogo('/media/logos/winbri-logo.png')
 			} else if (storedAdmin === 'Master') {
 				setSelectedLogo('/media/logos/winbri-logo.png')
 			}
@@ -37,9 +37,9 @@ const HeaderToolbar = () => {
 		localStorage.setItem('admin', value)
 
 		if (value === 'Admin') {
-			window.location.href = '/winbri-life-science/dashboard'
+			window.location.href = '/winbri-life-science/service'
 		} else if (value === 'Master') {
-			window.location.href = '/master/dashboard'
+			window.location.href = '/master/services'
 		}
 	}
 
@@ -115,7 +115,7 @@ const HeaderToolbar = () => {
 												href='#'
 												className='menu-link'
 												onClick={() =>
-													handleSelection('/media/logos/winbri-life-science-logo.png', 'Master')
+													handleSelection('/media/logos/winbri-logo.png', 'Master')
 												}>
 												<span className='menu-title'>Master</span>
 											</a>
@@ -125,8 +125,8 @@ const HeaderToolbar = () => {
 										<a
 											href='#'
 											className='menu-link'
-											onClick={() => handleSelection('/media/logos/winbri-life-science-logo.png', 'Admin')}>
-											<span className='menu-title'>Three Style</span>
+											onClick={() => handleSelection('/media/logos/winbri-logo.png', 'Admin')}>
+											<span className='menu-title'>Winbri Life Science</span>
 										</a>
 									</div>
 									{/* <div className='menu-item my-0'>
@@ -139,7 +139,7 @@ const HeaderToolbar = () => {
 													'trainer'
 												)
 											}>
-											<span className='menu-title'>Three Style Trainer</span>
+											<span className='menu-title'>Winbri Life Science Trainer</span>
 										</a>
 									</div> */}
 								</div>

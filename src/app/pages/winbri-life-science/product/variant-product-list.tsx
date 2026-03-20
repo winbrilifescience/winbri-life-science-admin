@@ -39,7 +39,6 @@ const VariantProductList: React.FC = () => {
 				sort,
 				sortOrder,
 			})
-			console.log('response.data?.[0]?.variants :- ', response.data?.[0]?.variants)
 
 			setProductData(response.data?.[0]?.variants)
 
@@ -143,7 +142,7 @@ const VariantProductList: React.FC = () => {
 
 	return (
 		<>
-			<PageTitle breadcrumbs={[]}>Three Style Products</PageTitle>
+			<PageTitle breadcrumbs={[]}>Winbri Life Science Products</PageTitle>
 			<KTCard>
 				<div className='card-header border-0 pt-6'>
 					<div className='card-title'>

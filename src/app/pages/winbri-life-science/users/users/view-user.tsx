@@ -189,8 +189,10 @@ const UserView = () => {
 		const selectedCourseId = event.target.value
 		let selectedCourse = fitnessCourses.find((course) => course?.course_name === selectedCourseId)
 
-		if(!selectedCourse) {
-			selectedCourse = fitnessCourses.find((course) => `${course?.course_name} - ${course?.course_category}` === selectedCourseId)
+		if (!selectedCourse) {
+			selectedCourse = fitnessCourses.find(
+				(course) => `${course?.course_name} - ${course?.course_category}` === selectedCourseId
+			)
 		}
 
 		if (selectedCourse) {
@@ -340,7 +342,7 @@ const UserView = () => {
 
 	// 	let courseName: any = []
 	// 	const coachingData = fitnessCourses.filter((course: any) => course.coaching_mode === value)
-	// 	courseName = coachingData.map((course: any) => course?.course_name)
+	// 	courseName = coachingData?.map((course: any) => course?.course_name)
 
 	// 	setFitnessCoursesId(courseName)
 	// }
@@ -357,8 +359,8 @@ const UserView = () => {
 
 		const filteredCourseNames: any = fitnessCourses
 			.filter((course: any) => course.coaching_mode === value)
-			.map((course: any) => `${course.course_name}`)
-			// .map((course: any) => `${course.course_name} - ${course.course_category}`)
+			?.map((course: any) => `${course.course_name}`)
+		// ?.map((course: any) => `${course.course_name} - ${course.course_category}`)
 
 		setFitnessCoursesId(filteredCourseNames) // ✅ string[]
 	}
@@ -976,7 +978,8 @@ const UserView = () => {
 									<Link
 										className='text-dark'
 										to={
-											'/winbri-life-science/scholarship-result/submissionResult?user_id=' + userResponseData._id
+											'/winbri-life-science/scholarship-result/submissionResult?user_id=' +
+											userResponseData._id
 										}>
 										<div
 											className='category-box d-flex align-items-center'
@@ -1112,7 +1115,7 @@ const UserView = () => {
 									</td>
 								</tr>
 							) : userResponseData.active_services.length !== 0 ? (
-								userResponseData.active_services.map((serviceData: any, index: number) => (
+								userResponseData.active_services?.map((serviceData: any, index: number) => (
 									<li
 										key={index}
 										className='fs-4'>
@@ -1204,7 +1207,7 @@ const UserView = () => {
 											</td>
 										</tr>
 									) : (
-										userData.map((user: any, index: any) => (
+										userData?.map((user: any, index: any) => (
 											<tr key={index}>
 												<td className='text-center'>
 													<span className='text-dark fw-bold  d-block mb-1 fs-6'>{index + 1}</span>
@@ -1340,13 +1343,14 @@ const UserView = () => {
 												handleCourseSelection(e)
 											}}
 											htmlFor='course_id'
-											options={
-												fitnessCoursesId.length != 0
-													? fitnessCoursesId
-													: fitnessCourses.map(
-															(course) => `${course?.course_name}`
-													  )
-											}
+											// options={
+											// 	fitnessCoursesId.length != 0
+											// 		? fitnessCoursesId
+											// 		: fitnessCourses?.map(
+											// 				(course) => `${course?.course_name}`
+											// 		  )
+											// }
+											options={fitnessCoursesId}
 										/>
 										<InputField
 											placeholder='Amount'

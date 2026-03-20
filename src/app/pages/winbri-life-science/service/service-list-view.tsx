@@ -3,50 +3,56 @@ import toast from 'react-hot-toast'
 import { useLocation } from 'react-router-dom'
 import { PageTitle } from '../../../../_metronic/layout/core'
 import InputField from '../../../components/InputField'
-import { getProfile, ResetPassword, UpdateAdmin } from '../../../Functions/WinbriLifeScience'
 import TableButton from '../../../components/TableButton'
+import { GetServices, UpdateService } from '../../../Functions/WinbriLifeScience/Service'
 
-const AdminProfileView = () => {
+const ServiceListView = () => {
 	const location = useLocation()
 	const searchParams = new URLSearchParams(location.search)
-	const admin_id: string | any = searchParams.get('admin_id')
-	const [adminData, setAdminData] = useState<any>({
-		full_name: '',
-		email: '',
-		password: '',
-		branch: '',
-		type: '',
-		mobile: '',
-	})
-	const [showPassword, setShowPassword] = useState(false)
+	const service_id: string | any = searchParams.get('service_id')
+	const [serviceData, setServiceData] = useState<any>({})
 
-	const [changePassword, setChangePassword] = useState({
-		newPassword: '',
-		password: '',
-	})
-
-	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-		const { name, value } = event.target
-		setAdminData((prevData: any) => ({
-			...prevData,
-			[name]: value,
-		}))
-	}
-
-	const handleInputPasswordChange = (
-		event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+	const handleInputChange = (
+		event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+		index?: number
 	) => {
 		const { name, value } = event.target
-		setChangePassword((prevData) => ({
-			...prevData,
+
+		if (name.startsWith('assigned_user_') && index !== undefined) {
+			setServiceData((prev: any) => {
+				const updatedAssignments = [...(prev.healthCheckupAssignments || [])]
+
+				if (name === 'assigned_user_full_name') {
+					updatedAssignments[index].user.full_name = value
+				}
+
+				if (name === 'assigned_user_mobile') {
+					updatedAssignments[index].user.mobile = value
+				}
+
+				if (name === 'assigned_user_task') {
+					updatedAssignments[index].task = value.split(',')
+				}
+
+				return {
+					...prev,
+					healthCheckupAssignments: updatedAssignments,
+				}
+			})
+			return
+		}
+
+		setServiceData((prev: any) => ({
+			...prev,
 			[name]: value,
 		}))
 	}
 
-	const fetchAdminData = async () => {
+	const fetchServiceData = async () => {
 		try {
-			const response: WinbriAPIResponse | any = await getProfile()
-			setAdminData(response.data)
+			const response: any = await GetServices({ id: service_id })
+
+			setServiceData(response.data?.[0])
 		} catch (error) {
 			console.error(error)
 		}
@@ -54,39 +60,27 @@ const AdminProfileView = () => {
 
 	const handleUpdateButtonClick = async () => {
 		try {
-			const payload = {
-				full_name: adminData.full_name,
-				mobile: adminData.mobile,
-				email: adminData.email,
-				id: admin_id,
+			const payload: any = {
+				id: service_id,
+				serviceName: serviceData?.serviceName,
+				amount: serviceData?.amount,
+				assignedUsers: serviceData?.healthCheckupAssignments?.map((item: any) => item?.user?._id),
+				healthCheckupAssignments: serviceData?.healthCheckupAssignments?.map((item: any) => ({
+					user: item?.user?._id,
+					task: item?.task,
+				})),
+				address: serviceData?.address,
+				location: serviceData?.location,
+				mobile: serviceData?.mobile,
+				paymentMode: serviceData?.paymentMode,
+				upiReceivedAmount: serviceData?.upiReceivedAmount,
+				cashReceivedAmount: serviceData?.cashReceivedAmount,
 			}
 
-			await UpdateAdmin(payload)
+			await UpdateService(payload)
 
-			toast.success('Admin Updated Successfully')
-			fetchAdminData()
-		} catch (error: any) {
-			toast.error(error.message)
-			console.error(error)
-		}
-	}
-
-	const updateAdminPassword = async (admin_id: string) => {
-		try {
-			if (changePassword.password !== changePassword.newPassword) {
-				toast.error('Passwords do not match')
-				return
-			}
-
-			const payload = {
-				id: admin_id,
-				password: changePassword.password,
-			}
-
-			await ResetPassword(payload)
-
-			toast.success('Admin Password Updated Successfully')
-			fetchAdminData()
+			toast.success('Service Updated Successfully')
+			fetchServiceData()
 		} catch (error: any) {
 			toast.error(error.message)
 			console.error(error)
@@ -94,12 +88,12 @@ const AdminProfileView = () => {
 	}
 
 	useEffect(() => {
-		fetchAdminData()
+		fetchServiceData()
 	}, [])
 
 	return (
 		<>
-			<PageTitle breadcrumbs={[]}>Admin View</PageTitle>
+			<PageTitle breadcrumbs={[]}>Service View</PageTitle>
 			<div className='row'>
 				<div className='col-12 mt-3'>
 					<div className='card pt-10'>
@@ -108,33 +102,15 @@ const AdminProfileView = () => {
 								<div className='col-12'>
 									<div className='row'>
 										<InputField
-											placeholder='Enter Full Name'
+											placeholder='Enter Service Name'
 											type='text'
-											className='col-6 fv-row mb-7'
-											name='full_name'
-											label='Full Name'
-											htmlFor='full_name'
-											value={adminData.full_name}
+											className='col-md-6 fv-row mb-7'
+											name='serviceName'
+											label='Service Name'
+											htmlFor='serviceName'
+											value={serviceData?.serviceName}
 											onChange={handleInputChange}
 										/>
-										<div className='col-md-6 fv-row mb-7'>
-											<label
-												htmlFor='type'
-												className='required fw-bold fs-6 mb-5'>
-												Type
-											</label>
-											<select
-												disabled
-												name='type'
-												id='type'
-												className='form-control form-select form-control-solid mb-3 mb-lg-0'
-												value={adminData.type}
-												onChange={handleInputChange}>
-												<option value='MASTER'>Master</option>
-												<option value='ADMIN'>Admin</option>
-												<option value='FRANCHISE'>Franchise</option>
-											</select>
-										</div>
 										<InputField
 											placeholder='Enter Mobile'
 											type='text'
@@ -142,68 +118,160 @@ const AdminProfileView = () => {
 											name='mobile'
 											label='Mobile'
 											htmlFor='mobile'
-											value={adminData.mobile}
+											value={serviceData?.mobile}
 											onChange={handleInputChange}
 										/>
 										<InputField
-											placeholder='Enter Email'
+											placeholder='Enter Address'
 											type='text'
-											className='col-6 fv-row mb-7'
-											name='email'
-											label='Email'
-											htmlFor='email'
-											value={adminData.email}
+											className='col-12 fv-row mb-7'
+											name='address'
+											label='Address'
+											htmlFor='address'
+											value={serviceData?.address}
 											onChange={handleInputChange}
 										/>
-										<div className='col-md-4 fv-row mb-7'>
-											<TableButton
-												action="edit"
-												onClick={() => handleUpdateButtonClick()}
-												text="Update Admin"
-												backgroundDark={true}
+										<InputField
+											placeholder='Enter Location'
+											type='text'
+											className='col-md-6 fv-row mb-7'
+											name='location'
+											label='Location'
+											htmlFor='location'
+											value={serviceData?.location}
+											onChange={handleInputChange}
+										/>
+										<InputField
+											placeholder='Enter Amount'
+											type='text'
+											className='col-md-6 fv-row mb-7'
+											name='amount'
+											label='Amount'
+											htmlFor='amount'
+											value={serviceData?.amount}
+											onChange={handleInputChange}
+										/>
+										<div className='col-md-12 fv-row border-top pt-5'>
+											<label
+												htmlFor='type'
+												className='required fw-bold fs-6 mb-5'>
+												Assigned Users
+											</label>
+											{serviceData?.healthCheckupAssignments?.map((data: any, index: any) => {
+												return (
+													<div
+														className='row'
+														key={index}>
+														<InputField
+															placeholder='Enter Name'
+															type='text'
+															className='col-md-4 fv-row mb-7'
+															name='assigned_user_full_name'
+															label='Name'
+															htmlFor='assigned_user_full_name'
+															value={data?.user?.full_name}
+															onChange={(e: any) => handleInputChange(e, index)}
+														/>
+														<InputField
+															placeholder='Enter Mobile'
+															type='text'
+															className='col-md-4 fv-row mb-7'
+															name='assigned_user_mobile'
+															label='Mobile'
+															htmlFor='assigned_user_mobile'
+															value={data?.user?.mobile}
+															onChange={(e: any) => handleInputChange(e, index)}
+														/>
+														<InputField
+															placeholder='Enter Task'
+															type='text'
+															className='col-md-4 fv-row mb-7'
+															name='assigned_user_task'
+															label='Task'
+															htmlFor='assigned_user_task'
+															value={data?.task?.join(',')}
+															onChange={(e: any) => handleInputChange(e, index)}
+														/>
+													</div>
+												)
+											})}
+										</div>
+										<div className='fv-row col-12 border-top pt-5'>
+											<InputField
+												placeholder='Enter Payment Mode'
+												type='text'
+												className='col-md-6 fv-row mb-7'
+												name='paymentMode'
+												label='Payment Mode'
+												htmlFor='paymentMode'
+												value={serviceData?.paymentMode}
+												onChange={handleInputChange}
+											/>
+											{serviceData?.paymentMode === 'Cash' && (
+												<InputField
+													placeholder='Enter Cash Amount'
+													type='text'
+													className='col-md-6 fv-row mb-7'
+													name='cashReceivedAmount'
+													label='Received Cash Amount'
+													htmlFor='cashReceivedAmount'
+													value={serviceData?.cashReceivedAmount || ''}
+													onChange={handleInputChange}
+												/>
+											)}
+											{serviceData?.paymentMode === 'UPI' && (
+												<InputField
+													placeholder='Enter UPI Amount'
+													type='text'
+													className='col-md-6 fv-row mb-7'
+													name='upiReceivedAmount'
+													label='Received UPI Amount'
+													htmlFor='upiReceivedAmount'
+													value={serviceData?.upiReceivedAmount || ''}
+													onChange={handleInputChange}
+												/>
+											)}
+											{serviceData?.paymentMode === 'UPI & Cash' && (
+												<>
+													<InputField
+														placeholder='Enter Cash Amount'
+														type='text'
+														className='col-md-6 fv-row mb-7'
+														name='cashReceivedAmount'
+														label='Received Cash Amount'
+														htmlFor='cashReceivedAmount'
+														value={serviceData?.cashReceivedAmount || ''}
+														onChange={handleInputChange}
+													/>
+
+													<InputField
+														placeholder='Enter UPI Amount'
+														type='text'
+														className='col-md-6 fv-row mb-7'
+														name='upiReceivedAmount'
+														label='Received UPI Amount'
+														htmlFor='upiReceivedAmount'
+														value={serviceData?.upiReceivedAmount || ''}
+														onChange={handleInputChange}
+													/>
+												</>
+											)}
+											<InputField
+												placeholder='Enter Status'
+												type='text'
+												className='col-md-6 fv-row mb-7'
+												name='status'
+												label='Status'
+												htmlFor='status'
+												value={serviceData?.status}
+												onChange={handleInputChange}
 											/>
 										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div className='row mt-10 mb-10'>
-				<div className='col-12 mt-3'>
-					<div className='card pt-10'>
-						<div className='card-body'>
-							<h1 className='fw-bold text-dark fs-1 mb-10 '>Reset Password</h1>
-							<div className='row'>
-								<div className='col-12'>
-									<div className='row'>
-										<InputField
-											placeholder='Enter New Password'
-											type={showPassword ? 'text' : 'password'}
-											className='col-12 fv-row mb-7'
-											name='newPassword'
-											label='New Password'
-											htmlFor='newPassword'
-											value={changePassword.newPassword}
-											onChange={handleInputPasswordChange}
-										/>
-										<InputField
-											placeholder='Enter Password'
-											type={showPassword ? 'text' : 'password'}
-											className='col-12 fv-row mb-7'
-											name='password'
-											label='Confirm Password'
-											htmlFor='password'
-											value={changePassword.password}
-											onChange={handleInputPasswordChange}
-										/>
-										<div className='col-md-3 fv-row mb-7'>
+										<div className='col-md-4 fv-row mb-7'>
 											<TableButton
-												action="edit"
-												onClick={() => updateAdminPassword(admin_id)}
-												text="Reset Password"
-												showIcon={false}
+												action='edit'
+												onClick={() => handleUpdateButtonClick()}
+												text='Update Service'
 												backgroundDark={true}
 											/>
 										</div>
@@ -219,4 +287,4 @@ const AdminProfileView = () => {
 	)
 }
 
-export { AdminProfileView }
+export { ServiceListView }

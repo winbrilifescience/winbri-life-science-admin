@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-target-blank */
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { ThreeStyleAsideMenuItems } from './components/ThreeStyleAsideMenuItems'
+import { WinbriAsideMenuItems } from './components/WinbriAsideMenuItems'
 import { MasterAsideMenuItems } from './components/MasterAsideMenuItems'
 
 export function AsideMenuMain() {
@@ -22,7 +22,7 @@ export function AsideMenuMain() {
 
 	return (
 		<>
-			{adminType === 'Admin' && <ThreeStyleAsideMenuItems />}
+			{adminType === 'Admin' && <WinbriAsideMenuItems />}
 			{adminType === 'Master' && <MasterAsideMenuItems />}
 		</>
 	)

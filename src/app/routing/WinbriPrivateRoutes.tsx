@@ -22,8 +22,10 @@ import { AddProducts } from '../pages/winbri-life-science/product/add-product'
 import { EditProduct } from '../pages/winbri-life-science/product/edit-product'
 import VariantProductList from '../pages/winbri-life-science/product/variant-product-list'
 import ServiceList from '../pages/winbri-life-science/service/service-list'
+import { ServiceListView } from '../pages/winbri-life-science/service/service-list-view'
+import { ServiceListEdit } from '../pages/winbri-life-science/service/edit-service'
 
-const ThreeStylePrivateRoutes = () => {
+const WinbriPrivateRoutes = () => {
 	const UsersPage = lazy(() => import('../modules/apps/user-management/UsersPage'))
 
 	return (
@@ -107,6 +109,14 @@ const ThreeStylePrivateRoutes = () => {
 					path='service'
 					element={<ServiceList />}
 				/>
+				<Route
+					path='service-view'
+					element={<ServiceListView />}
+				/>
+				<Route
+					path='service-edit'
+					element={<ServiceListEdit />}
+				/>
 
 				{/* Lazy Modules */}
 				<Route
@@ -145,4 +155,4 @@ const SuspensedView: FC<WithChildren> = ({ children }) => {
 	return <Suspense fallback={<TopBarProgress />}>{children}</Suspense>
 }
 
-export { ThreeStylePrivateRoutes }
+export { WinbriPrivateRoutes }

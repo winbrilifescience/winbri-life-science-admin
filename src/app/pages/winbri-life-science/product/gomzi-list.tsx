@@ -136,7 +136,7 @@ const ProductList: React.FC = () => {
 
 	return (
 		<>
-			<PageTitle breadcrumbs={[]}>Three Style Products</PageTitle>
+			<PageTitle breadcrumbs={[]}>Winbri Life Science Products</PageTitle>
 			<KTCard>
 				<div className='card-header border-0 pt-6'>
 					<div className='card-title'>

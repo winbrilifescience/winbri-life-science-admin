@@ -1,59 +1,93 @@
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import { useLocation, useNavigate } from 'react-router-dom'
-import Swal from 'sweetalert2'
+import { useLocation } from 'react-router-dom'
 import { PageTitle } from '../../../../_metronic/layout/core'
 import InputField from '../../../components/InputField'
-import {
-	GetAdminUsers,
-	RemoveAdminUser,
-	ResetPassword,
-	UpdateAdmin,
-} from '../../../Functions/WinbriLifeScience'
+import SelectField from '../../../components/SelectField'
 import TableButton from '../../../components/TableButton'
+import { GetServices, UpdateService } from '../../../Functions/WinbriLifeScience/Service'
 
-const EditAdminUser = () => {
+const ServiceListEdit = () => {
 	const location = useLocation()
 	const searchParams = new URLSearchParams(location.search)
-	const admin_id: string | any = searchParams.get('admin_id')
-	const navigate = useNavigate();
-	const [adminData, setAdminData] = useState<any>({
-		full_name: '',
-		email: '',
-		password: '',
-		branch: '',
-		type: '',
-		mobile: '',
-	})
-
-	const [changePassword, setChangePassword] = useState({
-		newPassword: '',
-		password: '',
-	})
-	const [showPassword, setShowPassword] = useState(false)
+	const service_id: string | any = searchParams.get('service_id')
+	const [serviceData, setServiceData] = useState<any>({})
 
 	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
 		const { name, value } = event.target
-		setAdminData((prevData: any) => ({
-			...prevData,
+
+		if (name === 'paymentMode') {
+			setServiceData((prev: any) => ({
+				...prev,
+				paymentMode: value,
+				cashReceivedAmount: '',
+				upiReceivedAmount: '',
+			}))
+			return
+		}
+
+		if (
+			event.target instanceof HTMLInputElement &&
+			event.target.files &&
+			event.target.files.length > 0
+		) {
+			const file = event.target.files[0]
+
+			setServiceData((prev: any) => ({
+				...prev,
+				[name]: file,
+				[`${name}Preview`]: URL.createObjectURL(file),
+			}))
+			return
+		}
+
+		setServiceData((prev: any) => ({
+			...prev,
 			[name]: value,
 		}))
 	}
 
-	const handleInputPasswordChange = (
-		event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-	) => {
-		const { name, value } = event.target
-		setChangePassword((prevData) => ({
-			...prevData,
-			[name]: value,
-		}))
-	}
+	// const handleInputChange = (
+	// 	event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+	// 	index?: number
+	// ) => {
+	// 	const { name, value } = event.target
 
-	const fetchAdminData = async () => {
+	// 	if (name.startsWith('assigned_user_') && index !== undefined) {
+	// 		setServiceData((prev: any) => {
+	// 			const updatedAssignments = [...(prev.healthCheckupAssignments || [])]
+
+	// 			if (name === 'assigned_user_full_name') {
+	// 				updatedAssignments[index].user.full_name = value
+	// 			}
+
+	// 			if (name === 'assigned_user_mobile') {
+	// 				updatedAssignments[index].user.mobile = value
+	// 			}
+
+	// 			if (name === 'assigned_user_task') {
+	// 				updatedAssignments[index].task = value.split(',')
+	// 			}
+
+	// 			return {
+	// 				...prev,
+	// 				healthCheckupAssignments: updatedAssignments,
+	// 			}
+	// 		})
+	// 		return
+	// 	}
+
+	// 	setServiceData((prev: any) => ({
+	// 		...prev,
+	// 		[name]: value,
+	// 	}))
+	// }
+
+	const fetchServiceData = async () => {
 		try {
-			const response: WinbriAPIResponse = await GetAdminUsers({ adminID: admin_id })
-			setAdminData(response.data)
+			const response: any = await GetServices({ id: service_id })
+
+			setServiceData(response.data?.[0])
 		} catch (error) {
 			console.error(error)
 		}
@@ -61,39 +95,29 @@ const EditAdminUser = () => {
 
 	const handleUpdateButtonClick = async () => {
 		try {
-			const payload = {
-				full_name: adminData.full_name,
-				mobile: adminData.mobile,
-				email: adminData.email,
-				id: admin_id,
-			}
+			const payload: any = new FormData()
 
-			await UpdateAdmin(payload)
+			payload.append('id', service_id)
+			payload.append('serviceName', serviceData.serviceName)
+			// payload.append('amount', serviceData.amount)
+			payload.append('paymentMode', serviceData.paymentMode)
+			payload.append('status', serviceData.status)
 
-			toast.success('Admin Updated Successfully')
-			fetchAdminData()
-		} catch (error: any) {
-			toast.error(error.message)
-			console.error(error)
-		}
-	}
+			if (serviceData.cashReceivedAmount)
+				payload.append('cashReceivedAmount', serviceData.cashReceivedAmount)
 
-	const updateAdminPassword = async (admin_id: string) => {
-		try {
-			if (changePassword.password !== changePassword.newPassword) {
-				toast.error('Passwords do not match')
-				return
-			}
+			if (serviceData.upiReceivedAmount)
+				payload.append('upiReceivedAmount', serviceData.upiReceivedAmount)
 
-			const payload = {
-				id: admin_id,
-				password: changePassword.password,
-			}
+			if (serviceData.ecgReport) payload.append('ecgReport', serviceData.ecgReport)
+			if (serviceData.pftReport) payload.append('pftReport', serviceData.pftReport)
+			if (serviceData.bloodReport) payload.append('bloodReport', serviceData.bloodReport)
+			if (serviceData.paymentImage) payload.append('paymentImage', serviceData.paymentImage)
 
-			await ResetPassword(payload)
+			await UpdateService(payload)
 
-			toast.success('Admin Password Updated Successfully')
-			fetchAdminData()
+			toast.success('Service Updated Successfully')
+			fetchServiceData()
 		} catch (error: any) {
 			toast.error(error.message)
 			console.error(error)
@@ -101,39 +125,19 @@ const EditAdminUser = () => {
 	}
 
 	useEffect(() => {
-		fetchAdminData()
+		fetchServiceData()
 	}, [])
 
-	const removeAdmin = async (admin_id: string) => {
-		try {
-			Swal.fire({
-				title: 'Are you sure?',
-				text: 'You are about to Remove This Admin.',
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#3085d6',
-				cancelButtonColor: '#d33',
-				confirmButtonText: 'Yes',
-			}).then(async (result) => {
-				if (result.isConfirmed) {
-					const response: WinbriAPIResponse = await RemoveAdminUser({ id: admin_id })
-					if (response.status === 200) {
-						toast.success('Admin Remove successfully')
-						navigate('/winbri-life-science/admin-user');
-					} else {
-						toast.error('Failed to Remove Admin')
-					}
-				}
-			})
-		} catch (error: any) {
-			console.error('Error Removing Admin:', error)
-			toast.error(error.message)
+	const handleFileButtonClick = () => {
+		const fileInput = document.getElementById('fileInput') as HTMLInputElement | null
+		if (fileInput) {
+			fileInput.click()
 		}
 	}
 
 	return (
 		<>
-			<PageTitle breadcrumbs={[]}>Admin View</PageTitle>
+			<PageTitle breadcrumbs={[]}>Service View</PageTitle>
 			<div className='row'>
 				<div className='col-12 mt-3'>
 					<div className='card pt-10'>
@@ -141,71 +145,203 @@ const EditAdminUser = () => {
 							<div className='row'>
 								<div className='col-12'>
 									<div className='row'>
-										<InputField
-											placeholder='Enter Full Name'
-											type='text'
-											className='col-6 fv-row mb-7'
-											name='full_name'
-											label='Full Name'
-											htmlFor='full_name'
-											value={adminData.full_name}
-											onChange={handleInputChange}
-										/>
-										<div className='col-md-6 fv-row mb-7'>
-											<label
-												htmlFor='type'
-												className='fw-bold fs-6 mb-5'>
-												Type
-											</label>
-											<select
-												disabled
-												name='type'
-												id='type'
-												className='form-control disabled form-select form-control-solid mb-3 mb-lg-0'
-												value={adminData.type}
-												onChange={handleInputChange}>
-												<option value='MASTER'>Master</option>
-												<option value='ADMIN'>Admin</option>
-												<option value='FRANCHISE'>Franchise</option>
-												<option value='Store'>Store</option>
-											</select>
+										<div className='col-md-12 row text-center mb-5'>
+											<div className='col-md-2 col-6'>
+												<div className='mt-3'>
+													<label
+														htmlFor='ECG'
+														className='fw-bold fs-6 mb-5'>
+														ECG Report
+													</label>
+												</div>
+												<img
+													alt='ECG'
+													src={serviceData.ecgReportPreview || '/media/avatars/winbri-logo.png'}
+													style={{ borderRadius: '10px', width: '70%' }}
+												/>
+												<div className='mt-3'>
+													<label className='mt-5 px-2 py-1 mb-2 btn btn-success'>
+														Upload Document
+														<input
+															type='file'
+															name='ecgReport'
+															className='d-none'
+															onChange={handleInputChange}
+														/>
+													</label>
+												</div>
+											</div>
+											<div className='col-md-2 col-6'>
+												<div className='mt-3'>
+													<label
+														htmlFor='PFT'
+														className='fw-bold fs-6 mb-5'>
+														PFT Report
+													</label>
+												</div>
+												<img
+													alt='PFT'
+													src={serviceData.pftReportPreview || '/media/avatars/winbri-logo.png'}
+													style={{ borderRadius: '10px', width: '70%' }}
+												/>
+												<div className='mt-3'>
+													<label className='mt-5 px-2 py-1 mb-2 btn btn-success'>
+														Upload Document
+														<input
+															type='file'
+															name='pftReport'
+															className='d-none'
+															onChange={handleInputChange}
+														/>
+													</label>
+												</div>
+											</div>
+											<div className='col-md-2 col-6'>
+												<div className='mt-3'>
+													<label
+														htmlFor='Blood'
+														className='fw-bold fs-6 mb-5'>
+														Blood Report
+													</label>
+												</div>
+												<img
+													alt='Blood'
+													src={serviceData.bloodReportPreview || '/media/avatars/winbri-logo.png'}
+													style={{ borderRadius: '10px', width: '70%' }}
+												/>
+												<div className='mt-3'>
+													<label className='mt-5 px-2 py-1 mb-2 btn btn-success'>
+														Upload Document
+														<input
+															type='file'
+															name='bloodReport'
+															className='d-none'
+															onChange={handleInputChange}
+														/>
+													</label>
+												</div>
+											</div>
+											{(serviceData?.paymentMode === 'UPI' ||
+												serviceData?.paymentMode === 'UPI & Cash') && (
+												<div className='col-md-2 col-6 text-center'>
+													<div className='mt-3'>
+														<label
+															htmlFor='Payment'
+															className='fw-bold fs-6 mb-5'>
+															Payment Image
+														</label>
+													</div>
+
+													<img
+														alt='Payment'
+														src={
+															serviceData.paymentImagePreview || '/media/avatars/winbri-logo.png'
+														}
+														style={{ borderRadius: '10px', width: '70%' }}
+													/>
+
+													<div className='mt-8'>
+														<label className='d-md-block d-none mt-5 px-2 py-1 mb-2 btn btn-success'>
+															Upload Image
+															<input
+																type='file'
+																name='paymentImage'
+																className='d-none'
+																onChange={handleInputChange}
+															/>
+														</label>
+														<label className='d-md-none d-block mt-5 px-2 py-1 mb-2 btn btn-success'>
+															Upload <br /> Image
+															<input
+																type='file'
+																name='paymentImage'
+																className='d-none'
+																onChange={handleInputChange}
+															/>
+														</label>
+													</div>
+												</div>
+											)}
 										</div>
-										<InputField
-											placeholder='Enter Mobile'
-											type='text'
+										<SelectField
 											className='col-md-6 fv-row mb-7'
-											name='mobile'
-											label='Mobile'
-											htmlFor='mobile'
-											value={adminData.mobile}
+											label='Payment Mode'
+											name='paymentMode'
+											value={serviceData?.paymentMode}
 											onChange={handleInputChange}
+											htmlFor='paymentMode'
+											options={['Cash', 'UPI', 'UPI & Cash']}
 										/>
-										<InputField
-											placeholder='Enter Email'
-											type='text'
-											className='col-6 fv-row mb-7'
-											name='email'
-											label='Email'
-											htmlFor='email'
-											value={adminData.email}
+										{serviceData?.paymentMode === 'Cash' && (
+											<InputField
+												placeholder='Enter Cash Amount'
+												type='text'
+												className='col-md-6 fv-row mb-7'
+												name='cashReceivedAmount'
+												label='Received Cash Amount'
+												htmlFor='cashReceivedAmount'
+												value={serviceData?.cashReceivedAmount || ''}
+												onChange={handleInputChange}
+											/>
+										)}
+
+										{serviceData?.paymentMode === 'UPI' && (
+											<InputField
+												placeholder='Enter UPI Amount'
+												type='text'
+												className='col-md-6 fv-row mb-7'
+												name='upiReceivedAmount'
+												label='Received UPI Amount'
+												htmlFor='upiReceivedAmount'
+												value={serviceData?.upiReceivedAmount || ''}
+												onChange={handleInputChange}
+											/>
+										)}
+
+										{serviceData?.paymentMode === 'UPI & Cash' && (
+											<>
+												<InputField
+													placeholder='Enter Cash Amount'
+													type='text'
+													className='col-md-6 fv-row mb-7'
+													name='cashReceivedAmount'
+													label='Received Cash Amount'
+													htmlFor='cashReceivedAmount'
+													value={serviceData?.cashReceivedAmount || ''}
+													onChange={handleInputChange}
+												/>
+
+												<InputField
+													placeholder='Enter UPI Amount'
+													type='text'
+													className='col-md-6 fv-row mb-7'
+													name='upiReceivedAmount'
+													label='Received UPI Amount'
+													htmlFor='upiReceivedAmount'
+													value={serviceData?.upiReceivedAmount || ''}
+													onChange={handleInputChange}
+												/>
+											</>
+										)}
+										<SelectField
+											className='col-md-6 fv-row mb-7'
+											label='Status'
+											name='status'
+											value={serviceData?.status}
 											onChange={handleInputChange}
+											htmlFor='status'
+											options={['Completed', 'Pending', 'Cancelled']}
 										/>
-										<div className='col-md-4 fv-row mb-7'>
-											<TableButton
-												action="edit"
-												onClick={() => handleUpdateButtonClick()}
-												text="Update Admin"
-												backgroundDark={true}
-												showIcon={false}
-											/>
-											<TableButton
-												action="remove"
-												onClick={() => removeAdmin(admin_id)}
-												text="Remove"
-												backgroundDark={true}
-												showIcon={false}
-											/>
-										</div>
+										{/* </div> */}
+									</div>
+									<div className='col-md-4 fv-row mb-7'>
+										<TableButton
+											action='edit'
+											onClick={() => handleUpdateButtonClick()}
+											text='Update Service'
+											backgroundDark={true}
+											className='ms-0'
+										/>
 									</div>
 								</div>
 							</div>
@@ -213,52 +349,9 @@ const EditAdminUser = () => {
 					</div>
 				</div>
 			</div>
-			<div className='row mt-10'>
-				<div className='col-12 mt-3'>
-					<div className='card pt-10'>
-						<div className='card-body'>
-							<h1 className='fw-bold text-dark fs-1 mb-10 '>Reset Password</h1>
-							<div className='row'>
-								<div className='col-12'>
-									<div className='row'>
-										<InputField
-											placeholder='Enter New Password'
-											type={showPassword ? 'text' : 'password'}
-											className='col-12 fv-row mb-7'
-											name='newPassword'
-											label='New Password'
-											htmlFor='newPassword'
-											value={changePassword.newPassword}
-											onChange={handleInputPasswordChange}
-										/>
-										<InputField
-											placeholder='Enter Password'
-											type={showPassword ? 'text' : 'password'}
-											className='col-12 fv-row mb-7'
-											name='password'
-											label='Confirm Password'
-											htmlFor='password'
-											value={changePassword.password}
-											onChange={handleInputPasswordChange}
-										/>
-										<div className='col-md-3 fv-row mb-7'>
-											<TableButton
-												action="edit"
-												onClick={() => updateAdminPassword(admin_id)}
-												text="Reset Password"
-												backgroundDark={true}
-												showIcon={false}
-											/>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+			{/* <AddAuthApp /> */}
 		</>
 	)
 }
 
-export { EditAdminUser }
+export { ServiceListEdit }

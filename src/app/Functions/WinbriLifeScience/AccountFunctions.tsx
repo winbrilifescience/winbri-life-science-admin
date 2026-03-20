@@ -12,7 +12,7 @@ export async function LoginWinbri(data: {
 	return await APIPost(WinbriEndpoints.Login, undefined, undefined, data)
 		.then(async (response: any) => {
 			if (response.status === HttpStatusCode.Ok) {
-				localStorage.setItem('@threestyle+auth', response.data.authorization)
+				localStorage.setItem('@winbri+auth', response.data.authorization)
 				return await GetUniversalAccessTokens()
 			} else {
 				return response
@@ -36,7 +36,7 @@ export async function VerifyEmailOTP(data: {
 	return await APIPost(WinbriEndpoints.VerifyEmailOTP, undefined, undefined, data)
 		.then(async (response: any) => {
 			if (response.status === HttpStatusCode.Ok) {
-				localStorage.setItem('@threestyle+auth', response.data.authorization)
+				localStorage.setItem('@winbri+auth', response.data.authorization)
 				return await GetUniversalAccessTokens()
 			} else {
 				return response
@@ -47,7 +47,7 @@ export async function VerifyEmailOTP(data: {
 
 export async function GetUniversalAccessTokens(): Promise<WinbriAPIResponse> {
 	return await APIGet(WinbriEndpoints.GetUniversalAccessToken, {
-		Authorization: localStorage.getItem('@threestyle+auth'),
+		Authorization: localStorage.getItem('@winbri+auth'),
 	})
 		.then((response: any) => {
 			if (response.status !== 200) throw response
@@ -69,7 +69,7 @@ export async function GetUniversalAccessTokens(): Promise<WinbriAPIResponse> {
 		})
 		.catch((error) => error)
 		.finally(() => {
-			localStorage.removeItem('@threestyle+auth')
+			localStorage.removeItem('@winbri+auth')
 		})
 }
 
